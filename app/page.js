@@ -113,13 +113,13 @@ export default function Home() {
        <div class="p-4 sm:ml-64 mt-20 text-center">
         <h1 class="mb-4 text-3xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl">
           <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
-            #Smart Attendance
+            #Smart Invoice
           </span>{" "}
           System
         </h1>
         <p class="text-lg font-normal text-gray-500 lg:text-xl">
           Infinite Horizons, One Digital Nation: Charting the Course for Digital
-          Bharat
+          PP
         </p>
         <div className="mt-10  flex justify-center items-center">
         {/* <Image height={500} width={500} alt=";lknjb" className=" shadow shadow-xl rounded-lg" src={"/images/image.jpeg"} /> */}

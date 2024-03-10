@@ -3,29 +3,29 @@ import Navbar from "@/components/Navbar";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  const [Customers, setCustomers] = useState([]);
+  const [invoices, setinvoices] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [Loading, setLoading] = useState(true)
 
   const searchQueryLowercase = searchQuery.toLowerCase();
 
-  // Filter Customers based on the case-insensitive search query
-  const filteredCustomers = Customers.filter(
+  // Filter invoices based on the case-insensitive search query
+  const filteredinvoices = invoices.filter(
     (card) =>
-      card.CustomerName.toLowerCase().includes(searchQueryLowercase) ||
-      card.CustomerPhone.toLowerCase().includes(searchQueryLowercase) ||
+      card.OrderID.toLowerCase().includes(searchQueryLowercase) ||
+      card.SalesChannel.toLowerCase().includes(searchQueryLowercase) ||
       card.CustomerID.toLowerCase().includes(searchQueryLowercase) ||
-      card.CustomerEmail.toLowerCase().includes(searchQueryLowercase)
+      card.Address.toLowerCase().includes(searchQueryLowercase)
   );
   useEffect(() => {
     // Fetch data from the API
     setLoading(true)
-    fetch("/api/getCustomer")
+    fetch("/api/getInvoice")
       .then((response) => response.json())
       .then((data) => {
         setLoading(false)
         if (data.success) {
-          setCustomers(data.customers);
+          setinvoices(data.invoices);
         } else {
           console.error("API request failed");
         }
@@ -85,33 +85,36 @@ const Page = () => {
               </div>
             </form>
           </div>
-          <a href="customers/add" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Customer</a>
+          <a href="/admin/orders" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Invoice</a>
 
-          {filteredCustomers.length > 0 ? (
+          {filteredinvoices.length > 0 ? (
             <table className="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Customer ID
+                    Product ID
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Name
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Phone
+                    Address
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Email
+                    Sales Channel
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Tracking ID
+                  </th>
+                    <th scope="col" className="px-6 py-3">
                     Action
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredCustomers.map((customer) => (
+                {filteredinvoices.map((Product) => (
                   <tr
-                    key={customer._id}
+                    key={Product._id}
                     className="bg-white border-b"
                   >
                     {/* Display only the relevant columns */}
@@ -119,17 +122,24 @@ const Page = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {customer.CustomerID}
+                      {Product.InvoiceID}
                     </th>
-                    <td className="px-6 py-4">{customer.CustomerName}</td>
-                    <td className="px-6 py-4">{customer.CustomerPhone}</td>
-                    <td className="px-6 py-4">{customer.CustomerEmail}</td>
+                    <td className="px-6 py-4">{Product.OrderID}</td>
+                    <td className="px-6 py-4">{Product.Address}/-</td>
+                    <td className="px-6 py-4">{Product.SalesChannel}</td>
+                    <td className="px-6 py-4">{Product.TrackingID}</td>
                     <td className="px-6 py-4">
-                      <a
-                        href={`customers/edit?id=${customer.CustomerID}`}
+                    <a
+                        href={`ssss/edit?id=${Product.OrderID}`}
                         className="font-medium text-blue-600 hover:underline"
                       >
-                        Edit
+                        Edit{" |"}
+                      </a>
+                      <a
+                        href={`orders/show?id=${Product.OrderID}`}
+                        className="font-medium text-blue-600 hover:underline"
+                      >
+                        {" "}PDF
                       </a>
                     </td>
                   </tr>

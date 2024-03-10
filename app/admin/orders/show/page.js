@@ -83,9 +83,29 @@ const Page = () => {
     }, [Product])
 
 
-    // ... (your existing code)
+    function addInvoice() {
+        fetch("/api/addInvoice", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ OrderID: Product.OrderID }),
+        }).then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data);
+                } else {
+                    console.error("API request failed");
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+
+    }
 
     const getOrderDetails = () => {
+
         if (Product && Product.Products && Array.isArray(Product.Products)) {
             let subtotalAmount = 0; // Variable to accumulate the subtotal value
             const taxRate = 0.18; // 18% tax rate
@@ -151,6 +171,7 @@ const Page = () => {
     });
 
     const handlePrint = () => {
+        addInvoice();
         const printableArea = document.getElementById('printableArea');
 
         if (printableArea) {
@@ -227,6 +248,7 @@ const Page = () => {
                                 {getOrderDetails()}
                             </tbody>
                         </table>
+                        <p className="mt-2">Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                     </div>
                 </div>
             </section>
