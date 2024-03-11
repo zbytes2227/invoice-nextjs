@@ -51,6 +51,22 @@ const Page = () => {
       router.push("/login");
     }
   };
+
+
+
+  async function deleteMe(orderid) {
+    const fetch_api = await fetch("/api/delete/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({deltype : "orders", id: orderid})
+    });
+
+    const data = await fetch_api.json();
+    if (data.success) {
+      location.reload();
+    }
+  };
+
   return (
     <>
       <div class="p-4 mx-auto container mt-5">
@@ -158,6 +174,11 @@ const Page = () => {
                         className="font-medium text-blue-600 hover:underline"
                       >
                         {" "}Show
+                      </a> <a
+                      onClick={()=>(deleteMe(Product.OrderID))}
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        {" | "}Delete
                       </a>
                     </td>
                   </tr>

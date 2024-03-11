@@ -56,8 +56,7 @@ export default function Home() {
           System
         </h1>
         <p class="text-lg font-normal text-gray-500 lg:text-xl">
-          Infinite Horizons, One Digital Nation: Charting the Course for Digital
-          PP
+       -------------------------------------------------------------------------------------------
         </p>
         <div className="mt-10  flex justify-center items-center">
           {/* <Image height={500} width={500} alt=";lknjb" className=" shadow shadow-xl rounded-lg" src={"/images/image.jpeg"} /> */}

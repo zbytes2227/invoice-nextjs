@@ -1,10 +1,19 @@
 import Products from "@/model/Products";
+import { parse } from "cookie";  import jwt from "jsonwebtoken";
 import connectDb from "../../middleware/mongoose";
 
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
     try {
+      const cookies = parse(req.headers.cookie || "");
+      const token = cookies.admin_access_token;
+      let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+      if (!decoded._id==process.env.ADMIN_PASSWORD) {
+        return res
+          .status(403)
+          .json({ success: false, errors: "Unable to Authenticate" });
+      }
       // Check if the request body contains the 'cardid' field
       if (!req.body.productid) {
         return res.status(400).json({ success: false, msg: "Missing 'product ID' in the request body." });
@@ -27,6 +36,14 @@ const handler = async (req, res) => {
     }
   } else if (req.method === "GET") {
     try {
+      const cookies = parse(req.headers.cookie || "");
+      const token = cookies.admin_access_token;
+      let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+      if (!decoded._id==process.env.ADMIN_PASSWORD) {
+        return res
+          .status(403)
+          .json({ success: false, errors: "Unable to Authenticate" });
+      }
       // Find all cards in the database
       const allCards = await Products.find({});
   

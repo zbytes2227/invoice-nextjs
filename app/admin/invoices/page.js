@@ -51,6 +51,20 @@ const Page = () => {
   };
 
 
+  async function deleteMe(invoiceid) {
+    const fetch_api = await fetch("/api/delete/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({deltype : "invoice", id: invoiceid})
+    });
+
+    const data = await fetch_api.json();
+    if (data.success) {
+      location.reload();
+    }
+  };
+
+
 
   return (
     <>
@@ -166,6 +180,12 @@ const Page = () => {
                         className="font-medium text-blue-600 hover:underline"
                       >
                         {" "}PDF
+                      </a>
+                      <a
+                      onClick={()=>(deleteMe(Product.OrderID))}
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        {" | "}Delete
                       </a>
                     </td>
                   </tr>

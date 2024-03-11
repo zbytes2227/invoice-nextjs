@@ -1,4 +1,5 @@
 import Products from "@/model/Products";
+import { parse } from "cookie";  import jwt from "jsonwebtoken";
 import connectDb from "../../middleware/mongoose";
 import Invoices from "@/model/Invoices";
 import Orders from "@/model/Orders";
@@ -8,6 +9,14 @@ import Payments from "@/model/Payments";
 const handler = async (req, res) => {
     if (req.method == "POST") {
         try {
+            const cookies = parse(req.headers.cookie || "");
+            const token = cookies.admin_access_token;
+            let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+            if (!decoded._id==process.env.ADMIN_PASSWORD) {
+              return res
+                .status(403)
+                .json({ success: false, errors: "Unable to Authenticate" });
+            }
             console.log(req.body);
 
             const existingCard = await Payments.findOne({ OrderID: req.body.OrderID });
@@ -38,6 +47,14 @@ const handler = async (req, res) => {
         }
     } else if (req.method === "GET") {
         try {
+            const cookies = parse(req.headers.cookie || "");
+            const token = cookies.admin_access_token;
+            let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+            if (!decoded._id==process.env.ADMIN_PASSWORD) {
+              return res
+                .status(403)
+                .json({ success: false, errors: "Unable to Authenticate" });
+            }
             // Find all cards in the database
             const allCards = await Payments.find({});
 

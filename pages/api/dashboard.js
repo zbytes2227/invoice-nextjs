@@ -1,6 +1,7 @@
 import Invoices from "@/model/Invoices";
 import connectDb from "../../middleware/mongoose";
 import Orders from "@/model/Orders";
+import { parse } from "cookie";  import jwt from "jsonwebtoken";
 import Products from "@/model/Products";
 import Customers from "@/model/Customers";
 
@@ -8,6 +9,14 @@ import Customers from "@/model/Customers";
 const handler = async (req, res) => {
  if (req.method === "GET") {
     try {
+      const cookies = parse(req.headers.cookie || "");
+      const token = cookies.admin_access_token;
+      let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+      if (!decoded._id==process.env.ADMIN_PASSWORD) {
+        return res
+          .status(403)
+          .json({ success: false, errors: "Unable to Authenticate" });
+      }
       // Find all cards in the database
       const allOrders = await Orders.find({});
       const allInvoices = await Invoices.find({});

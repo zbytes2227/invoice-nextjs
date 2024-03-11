@@ -3,12 +3,22 @@ import Customers from "@/model/Customers";
 import connectDb from "../../middleware/mongoose";
 import Orders from "@/model/Orders";
 import Invoices from "@/model/Invoices";
+import { parse } from "cookie";
+import jwt from "jsonwebtoken";
 
 
 const handler = async (req, res) => {
 
   if (req.method == "POST") {
     try {
+              const cookies = parse(req.headers.cookie || "");
+              const token = cookies.admin_access_token;
+              let decoded = await jwt.verify(token, process.env.TOKEN_ADMIN);
+              if (!decoded._id==process.env.ADMIN_PASSWORD) {
+                return res
+                  .status(403)
+                  .json({ success: false, errors: "Unable to Authenticate" });
+              }
       console.log(req.body);
 
       const existingCard = await Orders.findOne({ OrderID: req.body.OrderID });

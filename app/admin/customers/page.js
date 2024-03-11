@@ -49,6 +49,19 @@ const Page = () => {
     }
   };
 
+  async function deleteMe(customerid) {
+    const fetch_api = await fetch("/api/delete/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({deltype : "customers", id: customerid})
+    });
+
+    const data = await fetch_api.json();
+    if (data.success) {
+      location.reload();
+    }
+  };
+
   return (
     <>
       <div class="p-4 mx-auto container mt-5">
@@ -145,6 +158,12 @@ const Page = () => {
                         className="font-medium text-blue-600 hover:underline"
                       >
                         Edit
+                      </a>
+                      <a
+                      onClick={()=>(deleteMe(customer.CustomerID))}
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        {" | "}Delete
                       </a>
                     </td>
                   </tr>

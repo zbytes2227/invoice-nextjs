@@ -52,7 +52,7 @@ const Navbar = () => {
               </button>
               <a href="/" class="flex ms-2 md:me-24">
                 <img
-                  src="https://flowbite.com/docs/images/logo.svg"
+                  src="/logo.png"
                   class="h-8 me-3"
                   alt="FlowBite Logo"
                 />
@@ -168,7 +168,7 @@ const Navbar = () => {
                     <span class="sr-only">Open user menu</span>
                     <img
                       class="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                      src="/logo.png"
                       alt="user photo"
                     />
                   </button>

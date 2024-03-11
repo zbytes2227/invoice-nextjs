@@ -18,6 +18,7 @@ const Page = () => {
       card.ProductID.toLowerCase().includes(searchQueryLowercase) ||
       card.ProductStock.toLowerCase().includes(searchQueryLowercase)
   );
+  
   useEffect(() => {
    auth();
     setLoading(true)
@@ -35,6 +36,19 @@ const Page = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  async function deleteMe(productid) {
+    const fetch_api = await fetch("/api/delete/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({deltype : "products", id: productid})
+    });
+
+    const data = await fetch_api.json();
+    if (data.success) {
+      location.reload();
+    }
+  };
 
 
   const router = useRouter();
@@ -145,6 +159,12 @@ const Page = () => {
                         className="font-medium text-blue-600 hover:underline"
                       >
                         Edit
+                      </a>
+                      <a
+                      onClick={()=>(deleteMe(Product.ProductID))}
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        {" | "}Delete
                       </a>
                     </td>
                   </tr>
