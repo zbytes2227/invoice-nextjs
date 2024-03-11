@@ -83,26 +83,7 @@ const Page = () => {
     }, [Product])
 
 
-    function addInvoice() {
-        fetch("/api/addInvoice", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ OrderID: Product.OrderID }),
-        }).then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    console.log(data);
-                } else {
-                    console.error("API request failed");
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-
-    }
+  
 
     const getOrderDetails = () => {
 
@@ -171,7 +152,6 @@ const Page = () => {
     });
 
     const handlePrint = () => {
-        addInvoice();
         const printableArea = document.getElementById('printableArea');
 
         if (printableArea) {
@@ -191,12 +171,20 @@ const Page = () => {
 
             <div className="mt-20">
                 <h2 className="mb-5 text-2xl font-bold text-center">
-                    SHOW ORDER DETAILS : {Product.OrderID} <a onClick={handlePrint} href="" class="mx-3 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white">
+                    {Product.OrderID} - ORDER DETAILS
+                </h2>
+                <div className="flex items-center justify-center mb-2">
+                    <a href={`/admin/invoices/add?id=${Product.OrderID}`} class="mx-3 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white">
                         <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                             Generate Invoice
                         </span>
                     </a>
-                </h2>
+                    <button onClick={handlePrint} href="" class="mx-3 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white">
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                            Print PDF
+                        </span>
+                    </button>
+                </div>
             </div>
             <section id="printableArea">
                 <div class="max-w-xl mx-auto border border-3 rounded-lg p-5">

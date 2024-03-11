@@ -36,7 +36,7 @@ const Page = () => {
   }, []);
   return (
     <>
-      <div class="p-4 sm:ml-64">
+      <div class="p-4 mx-auto container mt-5">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-screen">
 
           <div class=" mt-14  pb-4">

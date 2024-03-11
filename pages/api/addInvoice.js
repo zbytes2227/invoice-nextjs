@@ -28,35 +28,35 @@ const handler = async (req, res) => {
       let randomID;
     
       // Keep generating new random IDs until a unique one is found
-      while (!isUnique) {
+  
         randomID = generateRandomID();
     
         // Check if the generated ID already exists in the database
-        const existingInvoice = await Invoices.findOne({ InvoiceID: randomID });
+        const existingInvoice = await Invoices.findOne({ InvoiceID: req.body.OrderID+"inv" });
     
         // If no existing invoice found, mark it as unique
-        if (!existingInvoice) {
-          isUnique = true;
+        if (existingInvoice) {
+        return res.status(200).json({ success: false, msg: "Invoice Already Generated" });
         }
-      }
+ 
     
       // Now, use the unique random ID to create the new invoice
       const newCard = new Invoices({
-        InvoiceID: randomID,
+        InvoiceID: req.body.OrderID+"inv",
         OrderID: req.body.OrderID,
         CustomerID: existingCard.CustomerID,
         Products: existingCard.Products,
         SalesChannel: existingCard.SalesChannel,
         Address: existingCard.Address,
         TrackingID: existingCard.TrackingID,
+        Date: req.body.InvoiceDate,
+        Remarks: req.body.InvoiceRemarks
       });
     
       // Save the new invoice to the database
       await newCard.save();
-
-      await newCard.save();
       console.log("okay");
-      return res.status(200).json({ success: true, msg: "Order Added Successfuly.." });
+      return res.status(200).json({ success: true, msg: "Invoice Added Successfuly.." });
     } catch (err) {
       console.error(err);
       res

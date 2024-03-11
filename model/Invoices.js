@@ -11,6 +11,8 @@ const InvoiceSchema = new mongoose.Schema(
     Address: { type: String },
     TrackingID: { type: String },
     Total: { type: String },
+    Date: { type: String },
+    Remarks: { type: String },
   },
   { collection: "all-Invoices" },
   { timestamps: true }

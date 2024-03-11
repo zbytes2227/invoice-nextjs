@@ -10,7 +10,7 @@ const Page = () => {
   const search = searchParams.get('id')
   const [OrderID, setOrderID] = useState(search)
   const [InvoiceID, setInvoiceID] = useState(search + "inv");
-  const [Invoice, setInvoice] = useState('')
+  const [InvoiceName, setInvoiceName] = useState("");
 
   const [InvoiceDate, setInvoiceDate] = useState("");
   const [InvoiceRemarks, setInvoiceRemarks] = useState("");
@@ -18,7 +18,7 @@ const Page = () => {
 
 
 
-  function editInvoice() {
+  function addInvoice() {
     // Fetch data from the API
     const postData = {
       InvoiceID: InvoiceID,
@@ -28,7 +28,7 @@ const Page = () => {
     };
 
 
-    fetch("/api/editInvoice", {
+    fetch("/api/addInvoice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,6 +39,9 @@ const Page = () => {
         setmsg(data.msg)
         if (data.success) {
           console.log(data.Invoice);
+          setInvoiceName(data.Invoice.InvoiceName)
+          setInvoiceDate(data.Invoice.InvoiceDate)
+          setInvoiceRemarks(data.Invoice.InvoiceRemarks)
         } else {
           console.error("API request failed");
         }
@@ -65,38 +68,12 @@ const Page = () => {
   };
   
 
-  useEffect(() => {
-    
-    fetch("/api/getInvoice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({invoiceid : InvoiceID}),
-    }).then((response) => response.json())
-      .then((data) => {
-        setmsg(data.msg)
-        if (data.success) {
-          console.log(data.Invoice);
-          setInvoice(data.Invoice);
-          setInvoiceDate(formatDate(data.Invoice.Date)) 
-        setInvoiceRemarks(data.Invoice.Remarks)
-        } else {
-          console.error("API request failed");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-
-  }, [])
-  
 
   return (
     <>
       <div className="mt-20">
         <h2 className="mb-5 text-2xl font-bold text-center">
-          Edit Invoice Details
+          Add Invoice Details
         </h2>
       </div>
       <div class="max-w-sm mx-auto border border-3 rounded-lg p-5">
@@ -176,10 +153,10 @@ const Page = () => {
   </div> */}
         <button
 
-          onClick={editInvoice}
+          onClick={addInvoice}
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
-       Save   Edit
+          Save
         </button>
       </div>
     </>

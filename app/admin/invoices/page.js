@@ -15,6 +15,7 @@ const Page = () => {
       card.OrderID.toLowerCase().includes(searchQueryLowercase) ||
       card.SalesChannel.toLowerCase().includes(searchQueryLowercase) ||
       card.CustomerID.toLowerCase().includes(searchQueryLowercase) ||
+      card.Date.toLowerCase().includes(searchQueryLowercase) ||
       card.Address.toLowerCase().includes(searchQueryLowercase)
   );
   useEffect(() => {
@@ -36,7 +37,7 @@ const Page = () => {
   }, []);
   return (
     <>
-      <div class="p-4 sm:ml-64">
+      <div class="p-4 mx-auto container mt-5">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-screen">
 
           <div class=" mt-14  pb-4">
@@ -85,7 +86,7 @@ const Page = () => {
               </div>
             </form>
           </div>
-          <a href="/admin/orders" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Invoice</a>
+          {/* <a href="/admin/orders" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Invoice</a> */}
 
           {filteredinvoices.length > 0 ? (
             <table className="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
@@ -105,6 +106,9 @@ const Page = () => {
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Tracking ID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Date
                   </th>
                     <th scope="col" className="px-6 py-3">
                     Action
@@ -128,9 +132,10 @@ const Page = () => {
                     <td className="px-6 py-4">{Product.Address}/-</td>
                     <td className="px-6 py-4">{Product.SalesChannel}</td>
                     <td className="px-6 py-4">{Product.TrackingID}</td>
+                    <td className="px-6 py-4">{Product.Date}</td>
                     <td className="px-6 py-4">
                     <a
-                        href={`ssss/edit?id=${Product.OrderID}`}
+                        href={`/admin/invoices/edit?id=${Product.OrderID}`}
                         className="font-medium text-blue-600 hover:underline"
                       >
                         Edit{" |"}
