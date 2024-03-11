@@ -12,7 +12,7 @@ const InvoiceSchema = new mongoose.Schema(
     TrackingID: { type: String },
     Total: { type: String },
     Date: { type: String },
-    Remarks: { type: String },
+    Tax: { type: String },
   },
   { collection: "all-Invoices" },
   { timestamps: true }

@@ -13,7 +13,7 @@ const Page = () => {
   const [Invoice, setInvoice] = useState('')
 
   const [InvoiceDate, setInvoiceDate] = useState("");
-  const [InvoiceRemarks, setInvoiceRemarks] = useState("");
+  const [InvoiceTax, setInvoiceTax] = useState("");
   const [msg, setmsg] = useState("")
 
 
@@ -24,7 +24,7 @@ const Page = () => {
       InvoiceID: InvoiceID,
       OrderID: OrderID,
       InvoiceDate: InvoiceDate,
-      InvoiceRemarks: InvoiceRemarks,
+      InvoiceTax: InvoiceTax,
     };
 
 
@@ -80,7 +80,7 @@ const Page = () => {
           console.log(data.Invoice);
           setInvoice(data.Invoice);
           setInvoiceDate(formatDate(data.Invoice.Date)) 
-        setInvoiceRemarks(data.Invoice.Remarks)
+        setInvoiceTax(data.Invoice.Tax)
         } else {
           console.error("API request failed");
         }
@@ -156,12 +156,12 @@ const Page = () => {
             for="Contact"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Remarks
+            Tax
           </label>
           <input
             id="Contact"
-            value={InvoiceRemarks}
-            onChange={(e) => setInvoiceRemarks(e.target.value)}
+            value={InvoiceTax}
+            onChange={(e) => setInvoiceTax(e.target.value)}
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-0"
             placeholder="27657265"
             required

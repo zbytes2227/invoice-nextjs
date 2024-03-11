@@ -9,15 +9,15 @@ const handler = async (req, res) => {
             console.log("req.body");
             console.log(req.body);
             // Check if the request body contains the required fields
-            if (!req.body.InvoiceID || !req.body.OrderID || !req.body.InvoiceDate || !req.body.InvoiceRemarks) {
+            if (!req.body.InvoiceID || !req.body.OrderID || !req.body.InvoiceDate || !req.body.InvoiceTax) {
                 return res.status(400).json({ success: false, msg: "Missing required fields in the request body." });
             }
 
-            const { InvoiceID, OrderID, InvoiceRemarks, InvoiceDate } = req.body;
+            const { InvoiceID, OrderID, InvoiceTax, InvoiceDate } = req.body;
 
             const forbiddenSymbols = /[^a-zA-Z0-9\s\-()]/;
 
-            if (forbiddenSymbols.test(InvoiceRemarks)) {
+            if (forbiddenSymbols.test(InvoiceTax)) {
                 return res.status(400).json({ success: false, msg: "Details should not contain symbols except '-' and '()'." });
             }
             // Find the card in the database based on the provided cardid
@@ -28,7 +28,7 @@ const handler = async (req, res) => {
             }
 
             // Update the details of the found card
-            foundCard.Remarks = InvoiceRemarks;
+            foundCard.Tax = InvoiceTax;
             foundCard.Date = InvoiceDate;
         
 

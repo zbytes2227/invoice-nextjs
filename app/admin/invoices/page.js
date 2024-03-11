@@ -93,7 +93,7 @@ const Page = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Product ID
+                    Invoice ID
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Name
@@ -106,6 +106,9 @@ const Page = () => {
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Tracking ID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    TAX(%)
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Date
@@ -132,6 +135,7 @@ const Page = () => {
                     <td className="px-6 py-4">{Product.Address}/-</td>
                     <td className="px-6 py-4">{Product.SalesChannel}</td>
                     <td className="px-6 py-4">{Product.TrackingID}</td>
+                    <td className="px-6 py-4">{Product.Tax}%</td>
                     <td className="px-6 py-4">{Product.Date}</td>
                     <td className="px-6 py-4">
                     <a
@@ -141,7 +145,7 @@ const Page = () => {
                         Edit{" |"}
                       </a>
                       <a
-                        href={`orders/show?id=${Product.OrderID}`}
+                        href={`/admin/invoices/show?id=${Product.OrderID}`}
                         className="font-medium text-blue-600 hover:underline"
                       >
                         {" "}PDF

@@ -8,27 +8,20 @@ const Page = () => {
   const searchParams = useSearchParams();
 
   const search = searchParams.get('id')
-  const [OrderID, setOrderID] = useState(search)
-  const [InvoiceID, setInvoiceID] = useState(search + "inv");
-  const [InvoiceName, setInvoiceName] = useState("");
+  const [CustomerID, setcustomerID] = useState(search);
+  const [CustomerName, setCustomerName] = useState("");
 
-  const [InvoiceDate, setInvoiceDate] = useState("");
-  const [InvoiceTax, setInvoiceTax] = useState("");
+  const [CustomerPhone, setCustomerPhone] = useState("");
+  const [CustomerEmail, setCustomerEmail] = useState("");
   const [msg, setmsg] = useState("")
 
-
-
-  function addInvoice() {
+  const postData = {
+    customerid: CustomerID,
+    // Add other properties if needed
+  };
+  useEffect(() => {
     // Fetch data from the API
-    const postData = {
-      InvoiceID: InvoiceID,
-      OrderID: OrderID,
-      InvoiceDate: InvoiceDate,
-      InvoiceTax: InvoiceTax,
-    };
-
-
-    fetch("/api/addInvoice", {
+    fetch("/api/getCustomer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,12 +29,11 @@ const Page = () => {
       body: JSON.stringify(postData),
     }).then((response) => response.json())
       .then((data) => {
-        setmsg(data.msg)
         if (data.success) {
-          console.log(data.Invoice);
-          setInvoiceName(data.Invoice.InvoiceName)
-          setInvoiceDate(data.Invoice.InvoiceDate)
-          setInvoiceTax(data.Invoice.InvoiceTax)
+          console.log(data.customer);
+          setCustomerName(data.customer.CustomerName)
+          setCustomerPhone(data.customer.CustomerPhone)
+          setCustomerEmail(data.customer.CustomerEmail)
         } else {
           console.error("API request failed");
         }
@@ -49,31 +41,38 @@ const Page = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  };
+  }, []);
 
 
-  const formatDate = (selectedDate) => {
-    // Convert the selected date to a JavaScript Date object
-    const dateObject = new Date(selectedDate);
-  
-    // Extract year, month, and day
-    const year = dateObject.getFullYear();
-    const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObject.getDate()).padStart(2, '0');
-  
-    // Format the date as "yyyy-MM-dd"
-    const formattedDate = `${year}-${month}-${day}`;
-  
-    return formattedDate;
-  };
-  
-
+  function updateDetails() {
+    fetch("/api/editCustomer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ CustomerID: CustomerID, CustomerName: CustomerName, CustomerPhone: CustomerPhone, CustomerEmail: CustomerEmail }),
+    }).then((response) => response.json())
+      .then((data) => {
+        setmsg(data.msg)
+        if (data.success) {
+          console.log(data);
+          setTimeout(() => {
+            window.location.href = "/admin/customers"; // Replace "/your-target-page" with the actual target page URL
+          }, 1000);
+        } else {
+          console.error("API request failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
 
   return (
     <>
       <div className="mt-20">
         <h2 className="mb-5 text-2xl font-bold text-center">
-          Add Invoice Details
+          Edit Customer Details
         </h2>
       </div>
       <div class="max-w-sm mx-auto border border-3 rounded-lg p-5">
@@ -82,11 +81,10 @@ const Page = () => {
         </div>)}
         <div class="mb-5">
           <label for="id" class="block mb-2 text-sm font-medium text-gray-900">
-            Invoice ID
+            Customer ID
           </label>
           <input
-            value={InvoiceID}
-            onChange={(e) => setInvoiceID(e.target.value)}
+            value={CustomerID}
             type="text"
             disabled
             id="id"
@@ -99,13 +97,12 @@ const Page = () => {
             for="name"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Order ID
+            Name
           </label>
           <input
             type="text"
-            disabled
-            value={OrderID}
-            onChange={(e) => setInvoiceName(e.target.value)}
+            value={CustomerName}
+            onChange={(e) => setCustomerName(e.target.value)}
             id="name"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-0"
             required
@@ -113,32 +110,32 @@ const Page = () => {
         </div>
         <div class="mb-5">
           <label
-            for="invoiceDate"
+            for="class"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Invoice Date
+            Phone Number
           </label>
           <input
-            value={InvoiceDate}
-            onChange={(e) => setInvoiceDate(formatDate(e.target.value))}
-            type="date"
-            id="invoiceDate"
+            value={CustomerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            type="text"
+            id="class"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-0"
+            placeholder="10A"
             required
           />
         </div>
-
         <div class="mb-5">
           <label
             for="Contact"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Tax
+            Email
           </label>
           <input
             id="Contact"
-            value={InvoiceTax}
-            onChange={(e) => setInvoiceTax(e.target.value)}
+            value={CustomerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-0"
             placeholder="27657265"
             required
@@ -153,7 +150,7 @@ const Page = () => {
   </div> */}
         <button
 
-          onClick={addInvoice}
+          onClick={updateDetails}
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
           Save

@@ -50,7 +50,7 @@ const handler = async (req, res) => {
         Address: existingCard.Address,
         TrackingID: existingCard.TrackingID,
         Date: req.body.InvoiceDate,
-        Remarks: req.body.InvoiceRemarks
+        Tax: req.body.InvoiceTax
       });
     
       // Save the new invoice to the database

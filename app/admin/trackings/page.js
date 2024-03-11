@@ -3,30 +3,30 @@ import Navbar from "@/components/Navbar";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
-  const [Products, setProducts] = useState([]);
+  const [Trackings, setTrackings] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [Loading, setLoading] = useState(true)
 
   const searchQueryLowercase = searchQuery.toLowerCase();
 
-  // Filter Products based on the case-insensitive search query
-  const filteredProducts = Products.filter(
+  // Filter Trackings based on the case-insensitive search query
+  const filteredTrackings = Trackings.filter(
     (card) =>
-      card.OrderID.toLowerCase().includes(searchQueryLowercase) ||
-      card.CustomerID.toLowerCase().includes(searchQueryLowercase) ||
       card.TrackingID.toLowerCase().includes(searchQueryLowercase) ||
-      card.PaymentID.toLowerCase().includes(searchQueryLowercase) ||
-      card.SalesChannel.toLowerCase().includes(searchQueryLowercase)
+      card.OrderID.toLowerCase().includes(searchQueryLowercase) ||
+      card.trackingUrl.toLowerCase().includes(searchQueryLowercase) ||
+      card.TrackingStatus.toLowerCase().includes(searchQueryLowercase)
   );
   useEffect(() => {
     // Fetch data from the API
     setLoading(true)
-    fetch("/api/getOrder")
+    fetch("/api/tracking")
       .then((response) => response.json())
       .then((data) => {
         setLoading(false)
         if (data.success) {
-          setProducts(data.orders);
+          console.log(data);
+          setTrackings(data.trackings)
         } else {
           console.error("API request failed");
         }
@@ -85,38 +85,34 @@ const Page = () => {
                 </button>
               </div>
             </form>
-            
           </div>
-          <a href="orders/add" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Order</a>
+          {/* <a href="Trackings/add" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">New Customer</a> */}
 
-          {filteredProducts.length > 0 ? (
+          {filteredTrackings.length > 0 ? (
             <table className="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Order ID
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Customer ID
-                  </th> 
-                  <th scope="col" className="px-6 py-3">
-                    Payment ID
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Sales Channel
-                  </th>
-                  <th scope="col" className="px-6 py-3">
                     Tracking ID
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Action
+                    Order ID
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Tracking URL
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Status
+                  </th>
+                  {/* <th scope="col" className="px-6 py-3">
+                    Action
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
-                {filteredProducts.map((Product) => (
+                {filteredTrackings.map((customer) => (
                   <tr
-                    key={Product._id}
+                    key={customer._id}
                     className="bg-white border-b"
                   >
                     {/* Display only the relevant columns */}
@@ -124,25 +120,18 @@ const Page = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {Product.OrderID}
+                      {customer.TrackingID}
                     </th>
-                    <td className="px-6 py-4">{Product.CustomerID}</td>
-                    <td className="px-6 py-4">{Product.PaymentID}</td>
-                    <td className="px-6 py-4">{Product.SalesChannel}</td>
-                    <td className="px-6 py-4">{Product.TrackingID}</td>
+                    <td className="px-6 py-4">{customer.OrderID}</td>
+                    <td className="px-6 py-4">{customer.trackingUrl}</td>
+                    <td className="px-6 py-4">{customer.TrackingStatus}</td>
                     <td className="px-6 py-4">
                       {/* <a
-                        href={`orders/edit?id=${Product.OrderID}`}
+                        href={`Trackings/edit?id=${customer.CustomerID}`}
                         className="font-medium text-blue-600 hover:underline"
                       >
-                        Edit{" |"}
+                        Edit
                       </a> */}
-                      <a
-                        href={`orders/show?id=${Product.OrderID}`}
-                        className="font-medium text-blue-600 hover:underline"
-                      >
-                        {" "}Show
-                      </a>
                     </td>
                   </tr>
                 ))}

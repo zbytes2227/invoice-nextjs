@@ -28,7 +28,9 @@ const handler = async (req, res) => {
         Products:req.body.Products,
         SalesChannel: req.body.SalesChannel,
         Address: req.body.Address,
+        Pincode: req.body.Pincode,
         TrackingID: req.body.TrackingID,
+        PaymentID: req.body.PaymentID,
         Total: req.body.Total,
       });
 
