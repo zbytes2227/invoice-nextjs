@@ -15,6 +15,9 @@ const Page = () => {
   const [CustomerEmail, setCustomerEmail] = useState("");
   const [msg, setmsg] = useState("")
 
+  useEffect(() => {
+    auth();
+  }, [])
 
 
   function addCustomer() {
@@ -50,7 +53,18 @@ const Page = () => {
       });
   };
 
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  };
 
   return (
     <>

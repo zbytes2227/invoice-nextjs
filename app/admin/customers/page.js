@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
@@ -18,7 +19,7 @@ const Page = () => {
       card.CustomerEmail.toLowerCase().includes(searchQueryLowercase)
   );
   useEffect(() => {
-    // Fetch data from the API
+   auth();
     setLoading(true)
     fetch("/api/getCustomer")
       .then((response) => response.json())
@@ -34,6 +35,20 @@ const Page = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  };
+
   return (
     <>
       <div class="p-4 mx-auto container mt-5">

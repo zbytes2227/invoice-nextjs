@@ -1,7 +1,7 @@
 "use client"
 import Navbar from "@/components/Navbar";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Select from 'react-select';
 
 
@@ -90,7 +90,7 @@ const Page = () => {
 
 
   useEffect(() => {
-    // Fetch data from the API
+    auth();
     fetch("/api/getCustomer", {
       method: "GET",
       headers: {
@@ -194,7 +194,18 @@ const Page = () => {
       });
   }
 
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  };
 
   function savePaymentDetails() {
     const postData = {
@@ -374,7 +385,7 @@ const Page = () => {
           <button data-modal-target="payment-modal" data-modal-toggle="payment-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2" type="button"> Add Payment Details </button>
           <button onClick={save} class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2" type="button">Save & Create Order </button>
 
-          
+
         </div>
 
 

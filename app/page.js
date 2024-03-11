@@ -1,6 +1,8 @@
 
 "use client"
+import auth from "@/pages/api/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -8,7 +10,7 @@ export default function Home() {
   const [msg, setmsg] = useState("")
   useEffect(() => {
     
-  
+    auth();
 
     fetch("/api/dashboard", {
       method: "GET",
@@ -29,6 +31,20 @@ export default function Home() {
         console.error("Error fetching data:", error);
       });
   }, [])
+
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  }
+
   
   return (
     <>

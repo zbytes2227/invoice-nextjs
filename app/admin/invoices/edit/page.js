@@ -1,7 +1,7 @@
 "use client"
 import Navbar from "@/components/Navbar";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 const Page = () => {
@@ -66,7 +66,7 @@ const Page = () => {
   
 
   useEffect(() => {
-    
+    auth();
     fetch("/api/getInvoice", {
       method: "POST",
       headers: {
@@ -91,6 +91,18 @@ const Page = () => {
 
   }, [])
   
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  };
 
   return (
     <>

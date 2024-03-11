@@ -1,7 +1,27 @@
+"use client"
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Navbar = () => {
+  const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      const fetch_api = await fetch("/api/logout/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await fetch_api.json();
+      if (data.success) {
+        setTimeout(() => {
+          router.push("/login");
+        }, 500);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -201,7 +221,7 @@ const Navbar = () => {
                     </li>
                     <li>
                       <a
-                        href="#"
+                        onClick={handleLogout}
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
                       >

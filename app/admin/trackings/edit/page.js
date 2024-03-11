@@ -20,7 +20,7 @@ const Page = () => {
     // Add other properties if needed
   };
   useEffect(() => {
-    // Fetch data from the API
+    auth();
     fetch("/api/getCustomer", {
       method: "POST",
       headers: {
@@ -42,6 +42,19 @@ const Page = () => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  const router = useRouter();
+  async function auth() {
+    const fetch_api = await fetch("/api/auth/", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await fetch_api.json();
+    if (!data.success) {
+      router.push("/login");
+    }
+  };
 
 
   function updateDetails() {
